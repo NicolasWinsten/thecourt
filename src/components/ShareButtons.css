@@ -1,0 +1,113 @@
+.share-buttons-container {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.share-buttons-container h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #212121;
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.share-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.copy-link-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.copy-link-btn:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.native-share-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.native-share-btn:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.twitter-btn {
+  background: #1da1f2;
+  color: white;
+}
+
+.twitter-btn:hover {
+  background: #1a8cd8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+}
+
+.facebook-btn {
+  background: #1877f2;
+  color: white;
+}
+
+.facebook-btn:hover {
+  background: #0a66c2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+}
+
+.linkedin-btn {
+  background: #0a66c2;
+  color: white;
+}
+
+.linkedin-btn:hover {
+  background: #004182;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
+}
+
+.reddit-btn {
+  background: #ff4500;
+  color: white;
+}
+
+.reddit-btn:hover {
+  background: #e63d00;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .share-buttons-container {
+    padding: 16px;
+  }
+
+  .share-buttons {
+    gap: 8px;
+  }
+
+  .share-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    flex: 1;
+    min-width: calc(50% - 4px);
+  }
+}

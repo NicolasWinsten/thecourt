@@ -1,0 +1,46 @@
+.tier-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: stretch;
+}
+
+.tier-label {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.tier-drop-zone {
+  flex: 1;
+  background: #f5f5f5;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-content: flex-start;
+  min-height: 160px;
+  transition: all 0.2s ease;
+}
+
+.tier-drop-zone.drag-over {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.empty-placeholder {
+  width: 100%;
+  text-align: center;
+  color: #999;
+  padding: 40px 20px;
+  font-style: italic;
+}

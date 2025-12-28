@@ -1,0 +1,168 @@
+:root {
+  --primary-color: #2196f3;
+  --success-color: #4caf50;
+  --danger-color: #ff6b6b;
+  --warning-color: #ff9800;
+  --background: #fafafa;
+  --surface: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.app-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+}
+
+.app-header h1 {
+  font-size: 3em;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.app-header p {
+  font-size: 1.2em;
+  margin: 10px 0 0 0;
+  opacity: 0.95;
+}
+
+.app-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--background);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.tier-list-container {
+  margin-bottom: 30px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.action-buttons button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.share-btn {
+  background: var(--primary-color);
+  color: white;
+}
+
+.share-btn:hover:not(:disabled) {
+  background: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+.clear-btn {
+  background: var(--danger-color);
+  color: white;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stats {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.stats p {
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tier-counts {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tier-counts span {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .app-header h1 {
+    font-size: 2em;
+  }
+
+  .app-main {
+    padding: 16px;
+  }
+
+  .tier-row {
+    flex-direction: column;
+  }
+
+  .tier-label {
+    width: 100% !important;
+    min-height: auto;
+  }
+}
+
+.app-footer {
+  text-align: center;
+  padding: 24px 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.app-footer p {
+  margin: 0;
+}
+
+.app-footer a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.app-footer a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
