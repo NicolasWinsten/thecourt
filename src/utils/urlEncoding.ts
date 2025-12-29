@@ -1,18 +1,37 @@
 import type { HistoricalFigure } from '../types';
+import { fetchWikipediaImage } from '../services/wikipediaService';
+import Pako from 'pako';
+
+const tierEncoding: Record<HistoricalFigure['tier'], number> = {
+  goated: 0,
+  flawed: 1,
+  bad: 2,
+  irredeemable: 3,
+  unranked: 4
+};
+
+const encodeTier = (tier: HistoricalFigure['tier']): number => {
+  return tierEncoding[tier];
+}
+
+const decodeTier = (value: number): HistoricalFigure['tier'] => {
+  const entry = Object.entries(tierEncoding).find(([_, v]) => v === value);
+  return entry ? (entry[0] as HistoricalFigure['tier']) : 'unranked';
+}
 
 export const encodeToUrl = (figures: HistoricalFigure[]): string => {
   const data = figures.map(fig => ({
     name: fig.name,
-    tier: fig.tier,
-    imageUrl: fig.imageUrl
+    tier: encodeTier(fig.tier)
   }));
+
+
   
-  const json = JSON.stringify(data);
-  const compressed = btoa(json);
-  return compressed;
+  // return encodeURIComponent(JSON.stringify(data));
+  return encodeURIComponent(figures.map(({name, tier}) => `${name}~${encodeTier(tier)}`).join('|'));
 };
 
-export const decodeFromUrl = (): HistoricalFigure[] | null => {
+export const decodeFromUrl = async (): Promise<HistoricalFigure[] | null> => {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get('list');
   
@@ -21,14 +40,22 @@ export const decodeFromUrl = (): HistoricalFigure[] | null => {
   }
   
   try {
-    const json = atob(encoded);
-    const data = JSON.parse(json);
+    // const data = JSON.parse(decodeURIComponent(encoded));
+    const data = decodeURIComponent(encoded).split('|').map(item => {
+      const [name, tierStr] = item.split('~');
+      return { name, tier: parseInt(tierStr, 10) };
+    });
+    
+    const figureNames = data.map((item: any) => item.name);
+    
+    // Batch fetch all images in a single request
+    const imageUrls = await fetchWikipediaImage(figureNames);
     
     return data.map((item: any, index: number) => ({
       id: `${item.name}-${index}`,
       name: item.name,
-      tier: item.tier,
-      imageUrl: item.imageUrl
+      tier: decodeTier(item.tier),
+      imageUrl: imageUrls[index] || null
     }));
   } catch (error) {
     console.error('Error decoding URL:', error);

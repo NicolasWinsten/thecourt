@@ -1,58 +1,40 @@
-interface WikipediaImage {
-  source: string;
-  width: number;
-  height: number;
-}
-
-interface WikipediaImageInfo {
-  imageinfo: WikipediaImage[];
-}
-
 interface PageData {
   title: string;
   imageUrl: string | null;
 }
 
-const fetchPageWithImage = async (pageTitle: string): Promise<PageData> => {
+const fetchPageWithImage = async (pageTitles: string[]): Promise<PageData[]> => {
   try {
+    const titlesParam = pageTitles.join('|');
     // Fetch page info and image in a single request with redirects enabled
     const pageResponse = await fetch(
       `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(
-        pageTitle
+        titlesParam
       )}&redirects=true&prop=pageimages|pageterms&pithumbsize=250&format=json&origin=*`
     );
 
     const pageData = await pageResponse.json();
     const pages = pageData.query.pages;
-    const page = Object.values(pages)[0] as any;
 
-    if (page.thumbnail?.source) {
-      return { title: pageTitle, imageUrl: page.thumbnail.source };
-    }
+    const results: PageData[] = pageTitles.map(title => {
+      // Find the page by title since API returns pages by ID
+      const page = Object.values(pages).find((p: any) => p.title === title) as any;
 
-    // Fallback: try to get page image via images property
-    if (page.images && page.images.length > 0) {
-      const imageName = page.images[0].title;
-      
-      const imageInfoResponse = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(
-          imageName
-        )}&prop=imageinfo&iiprop=url&format=json&origin=*`
-      );
-
-      const imageInfoData = await imageInfoResponse.json();
-      const imagePages = imageInfoData.query.pages;
-      const imagePage = Object.values(imagePages)[0] as WikipediaImageInfo;
-
-      if (imagePage.imageinfo && imagePage.imageinfo.length > 0) {
-        return { title: pageTitle, imageUrl: imagePage.imageinfo[0].source };
+      if (!page) {
+        return { title, imageUrl: null };
       }
-    }
 
-    return { title: pageTitle, imageUrl: null };
+      if (page.thumbnail?.source) {
+        return { title, imageUrl: page.thumbnail.source };
+      }
+
+      return { title, imageUrl: null };
+    });
+
+    return results;
   } catch (error) {
-    console.error('Error fetching page with image:', error);
-    return { title: pageTitle, imageUrl: null };
+    console.error('Error fetching pages with images:', error);
+    return pageTitles.map(title => ({ title, imageUrl: null }));
   }
 };
 
@@ -80,14 +62,14 @@ export const resolveWikipediaName = async (
 };
 
 export const fetchWikipediaImage = async (
-  pageTitle: string
-): Promise<string | null> => {
+  pageTitles: string[]
+): Promise<(string | null)[]> => {
   try {
-    const pageData = await fetchPageWithImage(pageTitle);
-    return pageData.imageUrl;
+    const pageData = await fetchPageWithImage(pageTitles);
+    return pageData.map(data => data.imageUrl);
   } catch (error) {
-    console.error('Error fetching Wikipedia image:', error);
-    return null;
+    console.error('Error fetching Wikipedia images:', error);
+    return pageTitles.map(() => null);
   }
 };
 

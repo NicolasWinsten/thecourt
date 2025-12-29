@@ -12,10 +12,13 @@ function App() {
 
   // Load from URL on mount
   useEffect(() => {
-    const decoded = decodeFromUrl();
-    if (decoded && decoded.length > 0) {
-      setFigures(decoded);
-    }
+    const loadFigures = async () => {
+      const decoded = await decodeFromUrl();
+      if (decoded && decoded.length > 0) {
+        setFigures(decoded);
+      }
+    };
+    loadFigures();
   }, []);
 
   // Update URL whenever figures change

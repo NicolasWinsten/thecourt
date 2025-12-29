@@ -85,12 +85,12 @@ const FigureInput: React.FC<FigureInputProps> = ({ onAddFigure, existingNames })
         }
       }
 
-      const imageUrl = await fetchWikipediaImage(name);
+      const imageUrl = await fetchWikipediaImage([name]);
 
       const newFigure: HistoricalFigure = {
         id: Date.now().toString(),
         name,
-        imageUrl: imageUrl || undefined,
+        imageUrl: imageUrl[0] || undefined,
         tier: 'unranked'
       };
 
