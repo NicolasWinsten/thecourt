@@ -1,6 +1,5 @@
 import type { HistoricalFigure } from '../types';
 import { fetchWikipediaImage } from '../services/wikipediaService';
-import Pako from 'pako';
 
 const tierEncoding: Record<HistoricalFigure['tier'], number> = {
   goated: 0,
@@ -20,14 +19,6 @@ const decodeTier = (value: number): HistoricalFigure['tier'] => {
 }
 
 export const encodeToUrl = (figures: HistoricalFigure[]): string => {
-  const data = figures.map(fig => ({
-    name: fig.name,
-    tier: encodeTier(fig.tier)
-  }));
-
-
-  
-  // return encodeURIComponent(JSON.stringify(data));
   return encodeURIComponent(figures.map(({name, tier}) => `${name}~${encodeTier(tier)}`).join('|'));
 };
 
@@ -40,10 +31,9 @@ export const decodeFromUrl = async (): Promise<HistoricalFigure[] | null> => {
   }
   
   try {
-    // const data = JSON.parse(decodeURIComponent(encoded));
     const data = decodeURIComponent(encoded).split('|').map(item => {
-      const [name, tierStr] = item.split('~');
-      return { name, tier: parseInt(tierStr, 10) };
+      const [name, tierNumber] = item.split('~');
+      return { name, tier: parseInt(tierNumber, 10) };
     });
     
     const figureNames = data.map((item: any) => item.name);
@@ -55,7 +45,7 @@ export const decodeFromUrl = async (): Promise<HistoricalFigure[] | null> => {
       id: `${item.name}-${index}`,
       name: item.name,
       tier: decodeTier(item.tier),
-      imageUrl: imageUrls[index] || null
+      imageUrl: imageUrls[index] || undefined
     }));
   } catch (error) {
     console.error('Error decoding URL:', error);
